@@ -65,7 +65,7 @@ class SkipEmptySourceFilesTaskExecuterTest extends Specification {
         1 * taskExecutionHistory.outputFiles >> new HashSet<File>()
 
         then:
-        1 * state.setOutcome(TaskExecutionOutcome.NO_SOURCE)
+        1 * state.recordNoSource()
 
         then:
         1 * taskInputsListener.onExecute(task, sourceFiles)
@@ -102,7 +102,7 @@ class SkipEmptySourceFilesTaskExecuterTest extends Specification {
         1 * previousFile.delete() >> true
 
         then:
-        1 * state.setOutcome(TaskExecutionOutcome.EXECUTED)
+        1 * state.recordExecuted()
         1 * taskArtifactState.snapshotAfterTaskExecution(null)
 
         then:
@@ -138,7 +138,7 @@ class SkipEmptySourceFilesTaskExecuterTest extends Specification {
         1 * cleanupRegistry.isOutputOwnedByBuild(previousFile) >> false
 
         then:
-        1 * state.setOutcome(TaskExecutionOutcome.NO_SOURCE)
+        1 * state.recordNoSource()
         1 * taskArtifactState.snapshotAfterTaskExecution(null)
 
         then:
@@ -182,7 +182,7 @@ class SkipEmptySourceFilesTaskExecuterTest extends Specification {
         1 * previousFile.delete() >> true
 
         then:
-        1 * state.setOutcome(TaskExecutionOutcome.EXECUTED)
+        1 * state.recordExecuted()
         1 * taskArtifactState.snapshotAfterTaskExecution(null)
 
         then:

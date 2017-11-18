@@ -30,7 +30,7 @@ class TaskExecutionStatisticsReporterTest extends Specification {
 
     def "does not report statistics given 0 tasks"() {
         when:
-        reporter.buildFinished(new TaskExecutionStatistics(0, 0, 0))
+        reporter.buildFinished(new TaskExecutionStatistics(0, 0, 0, timeSaved))
 
         then:
         (textOutputFactory as String) == ""
@@ -39,7 +39,7 @@ class TaskExecutionStatisticsReporterTest extends Specification {
 
     def "disallows negative task counts as input"() {
         when:
-        reporter.buildFinished(new TaskExecutionStatistics(-1, 12, 7))
+        reporter.buildFinished(new TaskExecutionStatistics(-1, 12, 7, timeSaved))
 
         then:
         thrown IllegalArgumentException
@@ -47,7 +47,7 @@ class TaskExecutionStatisticsReporterTest extends Specification {
 
     def "properly pluralizes output"() {
         when:
-        reporter.buildFinished(new TaskExecutionStatistics(1, 0, 0))
+        reporter.buildFinished(new TaskExecutionStatistics(1, 0, 0, timeSaved))
 
         then:
         TextUtil.normaliseLineSeparators(textOutputFactory as String) == "{org.gradle.internal.buildevents.BuildResultLogger}{LIFECYCLE}1 actionable task: 1 executed\n"
@@ -56,7 +56,7 @@ class TaskExecutionStatisticsReporterTest extends Specification {
     @Unroll
     def "reports only task counts > 0 (exec: #executed, from cache: #fromCache, up-to-date #upToDate)"() {
         when:
-        reporter.buildFinished(new TaskExecutionStatistics(executed, fromCache, upToDate))
+        reporter.buildFinished(new TaskExecutionStatistics(executed, fromCache, upToDate, timeSaved))
 
         then:
         TextUtil.normaliseLineSeparators(textOutputFactory as String) == "{org.gradle.internal.buildevents.BuildResultLogger}{LIFECYCLE}$expected\n"
